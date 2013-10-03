@@ -30,4 +30,18 @@ class Mws::Apis::Products
     doc
   end
 
+  def get_competitive_pricing_for_asin(params={})
+    params[:ASIN_List] ||= [ params.delete(:ASINList) || [] ].flatten.compact
+    options = @option_defaults.merge action: 'GetCompetitivePricingForASIN'
+    doc = @connection.get "/Products/#{options[:version]}", params, options
+    doc
+  end
+
+  def get_product_categories_for_asin(params={})
+    options = @option_defaults.merge action: 'GetProductCategoriesForASIN'
+    doc = @connection.get "/Products/#{options[:version]}", params, options
+    doc
+  end
+
+
 end
