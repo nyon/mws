@@ -18,7 +18,7 @@ class Mws::Query
       key = normalize_key entry.first
       if entry.last.respond_to? :each_with_index
         entry.last.each_with_index do | value, index |
-          param_key = list_pattern % { key: key, ext: entry.first.to_s.split('_').first.capitalize, index: index + 1 }
+          param_key = list_pattern % { key: key, ext: entry.first.to_s.split('_').first, index: index + 1 }
           params[param_key] = normalize_val value
         end
       else
