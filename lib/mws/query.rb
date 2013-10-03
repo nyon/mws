@@ -26,6 +26,7 @@ class Mws::Query
       end
       params
     end.sort]
+
   end
 
   def to_s
