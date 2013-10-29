@@ -51,7 +51,6 @@ module Mws
     def response_for(method, path, query, body)
       uri = URI("#{@scheme}://#{@host}#{path}?#{query}")
       @log.debug "Request URI:\n#{uri}\n"
-      #puts "Request URI:\n#{uri}\n"
       req = Net::HTTP.const_get(method.to_s.capitalize).new (uri.request_uri)
       req['User-Agent'] = 'MWS Connect/0.0.1 (Language=Ruby)'
       req['Accept-Encoding'] = 'text/xml'
