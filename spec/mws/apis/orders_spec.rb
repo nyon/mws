@@ -7,7 +7,7 @@ module Mws::Apis
     let(:defaults) {
       {
         merchant: 'GSWCJ4UBA31UTJ',
-        access: 'AYQAKIAJSCWMLYXAQ6K3', 
+        access: 'AYQAKIAJSCWMLYXAQ6K3',
         secret: 'Ubzq/NskSrW4m5ncq53kddzBej7O7IE5Yx9drGrX'
       }
     }
@@ -62,18 +62,6 @@ module Mws::Apis
         expect {
           orders.send_fulfillment_data({}, [{:amazon_order_id => '123', :carrier_code => '12', :shipping_method => ''}])
         }.to raise_error Mws::Errors::ValidationError, 'A shipping_method is needed'
-      end
-
-      it 'should require a shipping_tracking_number' do
-        expect {
-          orders.send_fulfillment_data({}, [{:amazon_order_id => '123', :carrier_code => '12', :shipping_method => '12'}])
-        }.to raise_error Mws::Errors::ValidationError, 'A shipping_tracking_number is needed'
-      end
-
-      it 'should require a shipping_tracking_number' do
-        expect {
-          orders.send_fulfillment_data({}, [{:amazon_order_id => '123', :carrier_code => '12', :shipping_method => '12', :shipping_tracking_number => ''}])
-        }.to raise_error Mws::Errors::ValidationError, 'A shipping_tracking_number is needed'
       end
 
       it 'should require order_items as a array' do
