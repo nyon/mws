@@ -183,7 +183,7 @@ class Mws::Apis::Orders
 
   # Sends order fulfillment details to amazon
   # Needed: amazon_order_id, carrier_code, shipping_method, shipping_tracking_number
-  # Optional: merchant_order_id, fulfillment_date
+  # Optional: merchant_order_id, fulfillment_date, shipping_tracking_number
   #
   # orders = {:amazon_order_id => 123, :order_items => [{:order_item_id => 124, :amount => 125}] }
   def send_fulfillment_data(params, orders)
