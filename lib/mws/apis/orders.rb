@@ -6,8 +6,7 @@ class Mws::Apis::Orders
       market: 'ATVPDKIKX0DER'
     }.merge overrides
     @option_defaults = {
-      version: '2011-01-01',
-      list_pattern: '%{key}.%{ext}.%<index>d'
+      version: '2011-01-01'
     }
   end
 

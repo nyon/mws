@@ -40,8 +40,7 @@ module Mws
         action: overrides[:action],
         version: overrides[:version],
         merchant: @merchant,
-        access: @access,
-        list_pattern: overrides.delete(:list_pattern)
+        access: @access
       }.merge(params))
 
       signer = Signer.new method: method, host: @host, path: path, secret: @secret

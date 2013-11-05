@@ -13,7 +13,7 @@ module Mws
     let(:defaults) {
       {
         merchant: 'GSWCJ4UBA31UTJ',
-        access: 'AYQAKIAJSCWMLYXAQ6K3', 
+        access: 'AYQAKIAJSCWMLYXAQ6K3',
         secret: 'Ubzq/NskSrW4m5ncq53kddzBej7O7IE5Yx9drGrX'
       }
     }
@@ -54,9 +54,9 @@ module Mws
       end
 
       it 'should require an access key' do
-        expect { 
+        expect {
           Connection.new(
-            merchant: defaults[:merchant], 
+            merchant: defaults[:merchant],
             secret: defaults[:secret]
           )
         }.to raise_error Mws::Errors::ValidationError, 'An access key must be specified.'
@@ -67,7 +67,7 @@ module Mws
       end
 
       it 'should require a secret key' do
-        expect { 
+        expect {
           Connection.new(
             merchant: defaults[:merchant],
             access: defaults[:access]
@@ -103,11 +103,10 @@ module Mws
 
       it 'should construct a query, signer and make the request' do
         Query.should_receive(:new).with(
-          action: nil, 
-          version: nil, 
-          merchant: 'GSWCJ4UBA31UTJ', 
-          access: 'AYQAKIAJSCWMLYXAQ6K3', 
-          list_pattern: nil
+          action: nil,
+          version: nil,
+          merchant: 'GSWCJ4UBA31UTJ',
+          access: 'AYQAKIAJSCWMLYXAQ6K3',
         ).and_return('the_query')
         signer = double('signer')
         Signer.should_receive(:new).with(
@@ -129,11 +128,10 @@ module Mws
           secret: 'Ubzq/NskSrW4m5ncq53kddzBej7O7IE5Yx9drGrX'
         )
         Query.should_receive(:new).with(
-          action: nil, 
-          version: nil, 
-          merchant: 'GSWCJ4UBA31UTJ', 
-          access: 'AYQAKIAJSCWMLYXAQ6K3', 
-          list_pattern: nil,
+          action: nil,
+          version: nil,
+          merchant: 'GSWCJ4UBA31UTJ',
+          access: 'AYQAKIAJSCWMLYXAQ6K3',
           foo: 'bar',
           baz: 'quk'
         ).and_return('the_query')
@@ -150,13 +148,12 @@ module Mws
         connection.request(:get, '/foo', { foo: 'bar', baz: 'quk' }, nil, {})
       end
 
-      it 'should accept overrides to action, version and list_pattern' do
+      it 'should accept overrides to action and version ' do
         Query.should_receive(:new).with(
-          action: 'SubmitFeed', 
-          version: '2009-01-01', 
-          merchant: 'GSWCJ4UBA31UTJ', 
-          access: 'AYQAKIAJSCWMLYXAQ6K3', 
-          list_pattern: 'a_list_pattern'
+          action: 'SubmitFeed',
+          version: '2009-01-01',
+          merchant: 'GSWCJ4UBA31UTJ',
+          access: 'AYQAKIAJSCWMLYXAQ6K3'
         ).and_return('the_query')
         signer = double('signer')
         Signer.should_receive(:new).with(
@@ -168,13 +165,13 @@ module Mws
         signer.should_receive(:sign).with('the_query').and_return('the_signed_query')
         connection.should_receive(:response_for).with(:get, '/foo', 'the_signed_query', nil).and_return('the_response')
         connection.should_receive(:parse).with('the_response', { action: 'SubmitFeed', version: '2009-01-01' })
-        connection.request(:get, '/foo', {}, nil, { action: 'SubmitFeed', version: '2009-01-01', list_pattern: 'a_list_pattern' })
+        connection.request(:get, '/foo', {}, nil, { action: 'SubmitFeed', version: '2009-01-01' })
       end
 
     end
 
     context '#parse' do
-      
+
       it 'should parse error messages correctly' do
         body = <<-XML
         <?xml version="1.0"?>
@@ -187,7 +184,7 @@ module Mws
           <RequestId>fb03503e-97e3-4ed1-88e9-d93f4d2111c1</RequestId>
         </ErrorResponse>
         XML
-        expect { connection.parse(body, {}) }.to raise_error do | error | 
+        expect { connection.parse(body, {}) }.to raise_error do | error |
           error.should be_a Errors::ServerError
           error.type.should == 'Sender'
           error.code.should == 'InvalidParameterValue'

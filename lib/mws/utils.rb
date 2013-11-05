@@ -1,12 +1,12 @@
-# This module contains a collection of generally useful methods that (currently) have no better place to live. They can 
-# either be referenced directly as module methods or be mixed in. 
+# This module contains a collection of generally useful methods that (currently) have no better place to live. They can
+# either be referenced directly as module methods or be mixed in.
 module Mws::Utils
   extend self
 
   # This method will derive a camelized name from the provided underscored name.
-  # 
+  #
   # @param [#to_s] name The underscored name to be camelized.
-  # @param [Boolean] uc_first True if and only if the first letter of the resulting camelized name should be 
+  # @param [Boolean] uc_first True if and only if the first letter of the resulting camelized name should be
   #  capitalized.
   #
   # @return [String] The camelized name corresponding to the provided underscored name.
@@ -47,4 +47,33 @@ module Mws::Utils
     end
   end
 
+  def normalize_key key
+    camelize(key).sub(/^Asin/, 'ASIN').sub(/^Aws/, 'AWS')
+  end
+
+  def normalize_val value
+    uri_escape(value.respond_to?(:iso8601) ? value.iso8601 : value.to_s)
+  end
+
+  def format_params options
+    results = []
+
+    options.each do |pair|
+      key = normalize_key pair.first
+
+      if pair.last.respond_to? :each_with_index
+        pair.last.each_with_index do |value, index|
+          results << if key == "ASINList"
+            ["#{key}.ASIN.#{index + 1}", normalize_val(value)]
+          else
+            ["#{key}.Id.#{index + 1}", normalize_val(value)]
+          end
+        end
+      else
+        results << [key, normalize_val(pair.last)]
+      end
+    end
+
+    Hash[results.sort]
+  end
 end
