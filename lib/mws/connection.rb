@@ -8,7 +8,7 @@ module Mws
 
   class Connection
 
-    attr_reader :merchant, :orders, :products, :feeds
+    attr_reader :merchant, :orders, :products, :feeds, :log
 
     def initialize(overrides)
       @log = Logging.logger[self]
@@ -36,6 +36,7 @@ module Mws
     private
 
     def request(method, path, params, body, overrides)
+      overrides[:xpath] ||= params.delete(:xpath)
       query = Query.new({
         action: overrides[:action],
         version: overrides[:version],
