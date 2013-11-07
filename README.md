@@ -1,3 +1,5 @@
+[![Code Climate](https://codeclimate.com/github/nyon/mws.png)](https://codeclimate.com/github/nyon/mws)
+
 # Mws
 
 The goal of this gem is to facilities interactions with the Amazon Marketplace Web Services from Ruby clients.  
