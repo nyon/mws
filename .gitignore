@@ -18,3 +18,5 @@ test/version_tmp
 tmp
 *.sublime-workspace
 .idea/
+tags
+.rvmrc

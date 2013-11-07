@@ -1,19 +1,19 @@
 class Mws::Apis::Products
-
   def initialize(connection, overrides={})
     @connection = connection
     @param_defaults = {
       market: 'ATVPDKIKX0DER'
     }.merge overrides
     @option_defaults = {
-      version: '2011-10-01',
-      list_pattern: '%{key}.%{ext}.%<index>d'
+      version: '2011-10-01'
     }
   end
 
+  # Status for the product api. 'GREEN', 'YELLOW', 'RED'
   def status(params={})
     options = @option_defaults.merge action: 'GetServiceStatus'
-    @connection.get "/Products/#{options[:version]}", params, options
+    doc = @connection.get "/Products/#{options[:version]}", params, options
+    doc.xpath('Status').first.text # return the status text
   end
 
   def list_matching_products(params={})
@@ -37,5 +37,4 @@ class Mws::Apis::Products
     options = @option_defaults.merge action: 'GetProductCategoriesForASIN'
     @connection.get "/Products/#{options[:version]}", params, options
   end
-
 end

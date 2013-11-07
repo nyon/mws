@@ -1,17 +1,15 @@
 require 'spec_helper'
 
 module Mws
-
   class Query
     attr_reader :params
   end
 
   describe Query do
-    
     let(:defaults) do
       {
-        access: 'Q6K3SCWMLYAKIAJXAAYQ', 
-        merchant: 'J4UBGSWCA31UTJ', 
+        access: 'Q6K3SCWMLYAKIAJXAAYQ',
+        merchant: 'J4UBGSWCA31UTJ',
         markets: [ 'ATVPDKIKX0DER', 'KIKX0DERATVPD' ],
         last_updated_after: 4.hours.ago
       }
@@ -28,7 +26,7 @@ module Mws
     end
 
     it 'should default Timestamp to now in iso8601 format' do
-      time = URI.decode(query.params['Timestamp']).should == Time.now.iso8601
+      URI.decode(query.params['Timestamp']).should == Time.now.iso8601
     end
 
     it 'should accept overrides to SignatureMethod' do
@@ -75,12 +73,34 @@ module Mws
       end
     end
 
-    it 'should allow for overriding the list representation strategy via list_pattern' do
+    it 'gracfully handles empty asin lists' do
+      Query.new(defaults.merge(asin_list: [])).params['ASINList.ASIN.1'].should be nil
+    end
+
+    it 'translates a single asin to ASINList.ASIN.1' do
+      asin = 'B002KT3XQM'
+      Query.new(defaults.merge(asin_list: [ asin ])).params['ASINList.ASIN.1'].should == asin
+    end
+
+    it 'translates multiple asins to ASINList.ASIN.*' do
+      asins = [ 'B002KT3XQM', 'B00FL8WW5C' ]
+      query = Query.new defaults.merge(asin_list: asins)
+      asins.each_with_index do | asin, index |
+        query.params["ASINList.ASIN.#{index + 1}"].should == asin
+      end
+    end
+
+    it 'converts multiple multi-value keys properly' do
+      asins = [ 'B002KT3XQM', 'B00FL8WW5C' ]
       markets = [ 'ATVPDKIKX0DER', 'KIKX0DERATVPD' ]
-      list_pattern = '%{key}[%<index>d]'
-      query = Query.new defaults.merge(markets: markets, list_pattern: list_pattern)
+      query = Query.new defaults.merge(asin_list: asins, markets: markets)
+
+      asins.each_with_index do | asin, index |
+        query.params["ASINList.ASIN.#{index + 1}"].should == asin
+      end
+
       markets.each_with_index do | market, index |
-        query.params["MarketplaceId[#{index + 1}]"].should == market
+        query.params["MarketplaceIdList.Id.#{index + 1}"].should == market
       end
     end
 
@@ -98,7 +118,5 @@ module Mws
         query.params[key].should == value
       end
     end
-
   end
-
 end
