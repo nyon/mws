@@ -6,9 +6,9 @@ module Mws::Apis::Feeds
 
     attr_reader :sku, :description
 
-    attr_accessor :upc, :tax_code, :msrp, :brand, :manufacturer, :name, :description, :bullet_points
+    attr_accessor :product_id_type, :product_id, :tax_code, :msrp, :brand, :manufacturer, :name, :description, :bullet_points
     attr_accessor :item_dimensions, :package_dimensions, :package_weight, :shipping_weight
-    attr_accessor :category, :details
+    attr_accessor :category, :details, :browse_node
 
     def initialize(sku, &block)
       @sku = sku
@@ -21,14 +21,15 @@ module Mws::Apis::Feeds
       Mws::Serializer.tree name, parent do |xml|
         xml.SKU @sku
         xml.StandardProductID {
-          xml.Type 'UPC'
-          xml.Value @upc
-        } unless @upc.nil?
-        xml.ProductTaxCode @tax_code unless @upc.nil?
+          xml.Type @product_id_type.uppercase
+          xml.Value @product_id
+        } unless @product_id.nil?
+        xml.ProductTaxCode @tax_code unless @tax_code.nil? # not used in Canada, Europe or Japan
         xml.DescriptionData {
           xml.Title @name unless @name.nil?
           xml.Brand @brand  unless @brand.nil?
           xml.Description @description  unless @description.nil?
+          xml.RecommendedBrowseNode @browse_node unless @browse_node.nil?
           bullet_points.each do | bullet_point |
             xml.BulletPoint bullet_point
           end
