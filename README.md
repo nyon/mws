@@ -45,7 +45,8 @@ Example: Add product details:
 
     sku = '12345678'
     product = Mws::Product sku {
-      upc '123435566654'
+      product_id '123435566654'
+      porudct_id_type 'upc'
       tax_code 'GEN_TAX_CODE'
       name 'Some Product'
       brand 'Some Brand'
