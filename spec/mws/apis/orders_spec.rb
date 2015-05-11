@@ -67,6 +67,7 @@ module Mws::Apis
         }.to_not raise_error Mws::Errors::ValidationError, 'A shipping_method is needed'
       end
 
+<<<<<<< HEAD
       it 'should not require a shipping_tracking_number' do
         expect {
           orders.send_fulfillment_data({}, [{:amazon_order_id => '123', :carrier_code => '12', :shipping_method => '12'}])
@@ -79,6 +80,8 @@ module Mws::Apis
         }.to_not raise_error Mws::Errors::ValidationError, 'A shipping_tracking_number is needed'
       end
 
+=======
+>>>>>>> 4c87f27f3e2910faaba1ead89531a3b3c9422cb9
       it 'should require order_items as a array' do
         expect {
           orders.send_fulfillment_data({}, [{:amazon_order_id => '111', :order_items => '', :carrier_code => '12', :shipping_method => '123', :shipping_tracking_number => '12'}])
