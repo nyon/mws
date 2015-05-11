@@ -8,8 +8,8 @@ module Mws
   describe Query do
     let(:defaults) do
       {
-        access: 'Q6K3SCWMLYAKIAJXAAYQ',
-        merchant: 'J4UBGSWCA31UTJ',
+        merchant: 'ABCDEFGHIJKLMN',
+        access: 'ABCDEFGHIJKLMNOPQRST',
         markets: [ 'ATVPDKIKX0DER', 'KIKX0DERATVPD' ],
         last_updated_after: 4.hours.ago
       }
@@ -44,7 +44,7 @@ module Mws
     end
 
     it 'should translate access to AWSAccessKeyId' do
-      access_key = 'Q6K3SCWMLYAKIAJXAAYQ'
+      access_key = 'ABCDEFGHIJKLMN'
       Query.new(defaults.merge(access: access_key)).params['AWSAccessKeyId'].should == access_key
     end
 

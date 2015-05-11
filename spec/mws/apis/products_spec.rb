@@ -3,9 +3,9 @@ require 'spec_helper'
 module Mws::Apis
   describe Products do
     defaults = {
-      merchant: 'GSWCJ4UBA31UTJ',
-      access: 'AYQAKIAJSCWMLYXAQ6K3',
-      secret: 'Ubzq/NskSrW4m5ncq53kddzBej7O7IE5Yx9drGrX'
+      merchant: 'ABCDEFGHIJKLMN',
+      access: 'ABCDEFGHIJKLMNOPQRST',
+      secret: '1234567890123456789012345678901234567890'
     }
 
     connection = Mws.connect defaults

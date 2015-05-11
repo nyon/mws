@@ -39,5 +39,5 @@ module Mws::Apis::Feeds
     end
 
   end
-  
+
 end
